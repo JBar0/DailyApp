@@ -17,12 +17,12 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
     private static final String TAG = "YoutubeActivity";
     static final String GOOGLE_API_KEY = "AIzaSyA9keNvDfQajJ53PyLdZ7BuQkjotXn1aJg";
     static final String YOUTUBE_VIDEO_ID_1 = "b1dFSWLJ9wY";
-    static final String YOUTUBE_VIDEO_ID_2 = "aJOTlE1K90k";
-    static final String YOUTUBE_VIDEO_ID_3 = "bo_efYhYU2A";
-    static final String YOUTUBE_VIDEO_ID_4 = "ft4jcPSLJfY";
-    static final String YOUTUBE_VIDEO_ID_5 = "m7Bc3pLyij0";
-    static final String YOUTUBE_VIDEO_ID_6 = "ir6nk2zrMG0";
-    static final String YOUTUBE_VIDEO_ID_7 = "I-QfPUz1es8";
+//    static final String YOUTUBE_VIDEO_ID_2 = "aJOTlE1K90k";
+//    static final String YOUTUBE_VIDEO_ID_3 = "bo_efYhYU2A";
+//    static final String YOUTUBE_VIDEO_ID_4 = "ft4jcPSLJfY";
+//    static final String YOUTUBE_VIDEO_ID_5 = "m7Bc3pLyij0";
+//    static final String YOUTUBE_VIDEO_ID_6 = "ir6nk2zrMG0";
+//    static final String YOUTUBE_VIDEO_ID_7 = "I-QfPUz1es8";
     static final String YOUTUBE_PLAYLIST = "PLx0sYbCqOb8TBPRdmBHs5Iftvv9TPboYG";
 
     @Override
@@ -32,10 +32,6 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
 //        ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.activity_youtube);
         ConstraintLayout layout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.activity_youtube, null);
         setContentView(layout);
-//        Button button1 = new Button(this);
-//        button1.setLayoutParams(new ConstraintLayout.LayoutParams(300, 80));
-//        button1.setText("Button added");
-//        layout.addView(button1);
         YouTubePlayerView playerView = new YouTubePlayerView(this);
         playerView.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         layout.addView(playerView);
@@ -53,7 +49,6 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
         if(!wasRestored) {
             youTubePlayer.cueVideo(YOUTUBE_VIDEO_ID_1);
         }
-
     }
 
     @Override
