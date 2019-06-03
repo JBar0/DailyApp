@@ -1,25 +1,42 @@
 package com.example.jakuba;
 
+import android.Manifest;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.share.Share;
+import com.facebook.share.model.ShareContent;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecordsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RecordsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
+
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     DbHelper dbHelper;
     Spinner spinData, spinTitle;
     Button btnShare;
     TextView txtTitle, txtArtist, txtSummary;
+    EditText editPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +49,8 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
         txtSummary = findViewById(R.id.txtLoadedSummary);
         spinData = findViewById(R.id.spinnerDate);
         spinTitle = findViewById(R.id.spinnerTitle);
+        editPhone = findViewById(R.id.editPhone);
+        btnShare = findViewById(R.id.btnShare);
 
         ArrayAdapter<String> adapterDate = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, loader(1, null));
         adapterDate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -43,15 +62,53 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
 
         spinData.setOnItemSelectedListener(this);
         spinTitle.setOnItemSelectedListener(this);
+        btnShare.setOnClickListener(this);
+
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnShare:
+                StringBuilder sb = new StringBuilder();
+                if (!txtTitle.getText().equals("")) {
+                    sb.append(txtTitle.getText().toString() + "\n\n");
+                }
+                if (!txtArtist.getText().equals("")) {
+//                    Toast.makeText(getApplicationContext(), "Empty", Toast.LENGTH_LONG).show();
+                    sb.append(txtArtist.getText().toString() + "\n\n");
+                }
+                if (!txtSummary.getText().equals("")) {
+                    sb.append(txtSummary.getText().toString());
+                }
+
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if (checkPermission()) {
+                        Log.e("permission", "Permission already granted.");
+                    } else {
+                        requestPermission();
+                    }
+                }
+
+                if(checkPermission()) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    ArrayList<String> parts = smsManager.divideMessage(sb.toString());
+                    smsManager.sendMultipartTextMessage(editPhone.getText().toString(), null, parts, null, null);
+//                    smsManager.sendTextMessage(editPhone.getText().toString(), null, sb.toString(), null, null);
+                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Message not sent", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.spinnerDate:
                 String date = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), "Data", Toast.LENGTH_LONG).show();
                 ArrayAdapter<String> adapterTitle = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, loader(3, date));
                 adapterTitle.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinTitle.setAdapter(adapterTitle);
@@ -68,7 +125,7 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
                     txtSummary.setText(cursor.getString(2));
                 }
                 break;
-                default:
+            default:
         }
     }
 
@@ -95,6 +152,20 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
             array.add(cursor.getString(0));
         }
         return array;
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(RecordsActivity.this, Manifest.permission.SEND_SMS);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE);
+
     }
 
 }
