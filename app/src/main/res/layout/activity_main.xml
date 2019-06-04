@@ -17,6 +17,7 @@
         android:layout_marginEnd="8dp"
         android:width="155dp"
         android:text="Newspaper"
+        android:background="@drawable/buttonshape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
@@ -28,6 +29,7 @@
         android:layout_marginTop="24dp"
         android:width="155dp"
         android:text="Music Player"
+        android:background="@drawable/buttonshape"
         app:layout_constraintStart_toStartOf="@+id/btnNewspap"
         app:layout_constraintTop_toBottomOf="@+id/btnNewspap" />
 
@@ -38,6 +40,7 @@
         android:layout_marginTop="24dp"
         android:width="155dp"
         android:text="Stored news"
+        android:background="@drawable/buttonshape"
         app:layout_constraintStart_toStartOf="@+id/btnMusicPlayer"
         app:layout_constraintTop_toBottomOf="@+id/btnMusicPlayer" />
 

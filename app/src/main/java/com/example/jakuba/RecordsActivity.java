@@ -63,7 +63,6 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
         spinData.setOnItemSelectedListener(this);
         spinTitle.setOnItemSelectedListener(this);
         btnShare.setOnClickListener(this);
-
     }
 
     @Override
@@ -165,7 +164,6 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, PERMISSION_REQUEST_CODE);
-
     }
 
 }

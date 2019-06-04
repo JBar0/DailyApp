@@ -33,6 +33,7 @@
         android:layout_marginEnd="8dp"
         android:width="168dp"
         android:text="Single Song"
+        android:background="@drawable/buttonshape2"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
@@ -45,6 +46,7 @@
         android:layout_marginEnd="8dp"
         android:width="168dp"
         android:text="Top Songs Playlist"
+        android:background="@drawable/buttonshape2"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnPlayRand"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline4" />

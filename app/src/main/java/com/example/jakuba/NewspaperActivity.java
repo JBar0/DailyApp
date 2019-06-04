@@ -115,9 +115,6 @@ public class NewspaperActivity extends AppCompatActivity {
             ParseApplications parseApplications = new ParseApplications();
             parseApplications.parse(s);
 
-//            ArrayAdapter<FeedEntry> arrayAdapter = new ArrayAdapter<FeedEntry>(
-//                    MainActivity.this, R.layout.list_item, parseApplications.getApplications());
-//            listApps.setAdapter(arrayAdapter);
             FeedAdapter feedAdapter = new FeedAdapter(NewspaperActivity.this, R.layout.list_record,
                     parseApplications.getApplications());
             listApps.setAdapter(feedAdapter);
@@ -141,9 +138,6 @@ public class NewspaperActivity extends AppCompatActivity {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 int response = connection.getResponseCode();
                 Log.d(TAG, "downloadXML: The response code was " + response);
-//                InputStream inputStream = connection.getInputStream();
-//                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-//                BufferedReader reader = new BufferedReader(inputStreamReader);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
                 int charsRead;
@@ -201,7 +195,6 @@ public class NewspaperActivity extends AppCompatActivity {
                     String tagName = xpp.getName();
                     switch (eventType) {
                         case XmlPullParser.START_TAG:
-//                        Log.d(TAG, "parse: Starting tag for " + tagName);
                             if("entry".equalsIgnoreCase(tagName) || "item".equalsIgnoreCase(tagName)) {
                                 inEntry = true;
                                 currentRecord = new FeedEntry();
@@ -213,7 +206,6 @@ public class NewspaperActivity extends AppCompatActivity {
                             break;
 
                         case XmlPullParser.END_TAG:
-//                        Log.d(TAG, "parse: Ending tag for " + tagName);
                             if(inEntry) {
                                 if("entry".equalsIgnoreCase(tagName)) {
                                     applications.add(currentRecord);
