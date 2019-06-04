@@ -31,6 +31,9 @@ import java.util.List;
 public class RecordsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
+    public static final String SPIND_POS = "spinD";
+    public static final String SPINT_POS = "spinT";
+    public static final String PHONE_NUM = "number";
 
     DbHelper dbHelper;
     Spinner spinData, spinTitle;
@@ -63,6 +66,12 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
         spinData.setOnItemSelectedListener(this);
         spinTitle.setOnItemSelectedListener(this);
         btnShare.setOnClickListener(this);
+
+        if (savedInstanceState != null) {
+            spinData.setSelection(savedInstanceState.getInt(SPIND_POS));
+            spinTitle.setSelection(savedInstanceState.getInt(SPINT_POS));
+            editPhone.setText(savedInstanceState.getString(PHONE_NUM));
+        }
     }
 
     @Override
@@ -74,7 +83,6 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
                     sb.append(txtTitle.getText().toString() + "\n\n");
                 }
                 if (!txtArtist.getText().equals("")) {
-//                    Toast.makeText(getApplicationContext(), "Empty", Toast.LENGTH_LONG).show();
                     sb.append(txtArtist.getText().toString() + "\n\n");
                 }
                 if (!txtSummary.getText().equals("")) {
@@ -93,10 +101,9 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
                     SmsManager smsManager = SmsManager.getDefault();
                     ArrayList<String> parts = smsManager.divideMessage(sb.toString());
                     smsManager.sendMultipartTextMessage(editPhone.getText().toString(), null, parts, null, null);
-//                    smsManager.sendTextMessage(editPhone.getText().toString(), null, sb.toString(), null, null);
-                    Toast.makeText(getApplicationContext(), "Message sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Message was sent", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Message not sent", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Message was not sent", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
@@ -131,6 +138,14 @@ public class RecordsActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SPIND_POS, spinData.getSelectedItemPosition());
+        outState.putInt(SPINT_POS, spinTitle.getSelectedItemPosition());
+        outState.putString(PHONE_NUM, editPhone.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 
     public List<String> loader(int p, String date) {

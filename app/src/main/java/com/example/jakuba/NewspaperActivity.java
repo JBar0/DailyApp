@@ -26,10 +26,10 @@ public class NewspaperActivity extends AppCompatActivity {
     private ListView listApps;
     DbHelper dbHelper;
     private String feedUrl = "https://www.newsweek.com/rss";
-    private int feedLimit = 10;
     private String feedCachedUrl = "INVALIDATED";
     public static final String STATE_URL = "feedUrl";
-    public static final String STATE_LIMIT = "feedLimit";
+    public static final String TITLEBAR_NAME = "titlebarName";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +40,10 @@ public class NewspaperActivity extends AppCompatActivity {
         dbHelper = new DbHelper(this);
         if(savedInstanceState != null) {
             feedUrl = savedInstanceState.getString(STATE_URL);
-            feedLimit = savedInstanceState.getInt(STATE_LIMIT);
+            setTitle(savedInstanceState.getString(TITLEBAR_NAME));
         }
 
-        downloadUrl(String.format(feedUrl, feedLimit));
+        downloadUrl(feedUrl);
 
     }
 
@@ -81,7 +81,7 @@ public class NewspaperActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-        downloadUrl(String.format(feedUrl, feedLimit));
+        downloadUrl(feedUrl);
         return true;
 
     }
@@ -89,7 +89,7 @@ public class NewspaperActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_URL, feedUrl);
-        outState.putInt(STATE_LIMIT, feedLimit);
+        outState.putString(TITLEBAR_NAME, getTitle().toString());
         super.onSaveInstanceState(outState);
     }
 
